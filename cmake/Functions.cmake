@@ -12,7 +12,7 @@ endfunction()
 
 function(AddResources rel_path group_name list_res)
   message(STATUS "   > ${rel_path} >> ${group_name}")
-  file(GLOB list_globbed "${rel_path}/*.qml" "${rel_path}/*.png" "${rel_path}/*.ttf" "${rel_path}/*.js" "${rel_path}/*.json" "${rel_path}/*.cfg")
+  file(GLOB list_globbed "${rel_path}/*.*")
   foreach(file ${list_globbed})
     message(STATUS "     - ${file}")
   endforeach()
@@ -20,3 +20,4 @@ function(AddResources rel_path group_name list_res)
   set(list_return ${list_globbed} ${${list_res}})
   set(${list_res} ${list_return} PARENT_SCOPE)
 endfunction()
+
