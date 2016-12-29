@@ -5,3 +5,4 @@ doc/doxygen/output/
 .idea
 *.pyc
 *.DS_Store
+*.qrc

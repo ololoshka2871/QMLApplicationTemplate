@@ -9,6 +9,7 @@
 #include <QQmlEngine>
 #include <QDirIterator>
 #include <QDir>
+#include <QDebug>
 
 namespace app {
 
@@ -23,13 +24,9 @@ namespace app {
         QApplication::setApplicationName(Meta::appName);
         QApplication::setApplicationVersion(Meta::versionString);
 
-        auto path = QDir(":");
+        const QString resourceDir = ":/";
 
-        auto resourceDir = path.absolutePath();
-
-        auto fonts_dir = QDir(resourceDir + "/fonts");
-
-        AddFontDir(fonts_dir.absolutePath());
+        AddFontDir(resourceDir + "fonts");
 
         this->m_view = new QQuickView();
         this->m_view->setTitle(QGuiApplication::applicationName());
@@ -37,10 +34,14 @@ namespace app {
         auto engine = this->m_view->engine();
         auto context = engine->rootContext();
 
+        /**
+          тут нужно указывать не сам каталог с файлом qmldir,
+          а каталог, в котором лежит каталог с qmldir
+        */
         engine->addImportPath(resourceDir + "qml");
         context->setContextProperty("App", Controller::Create());
 
-        this->m_view->setSource(QUrl::fromLocalFile(resourceDir + "qml/App/window.qml"));
+        this->m_view->setSource(QUrl("qrc:/qml/App/window.qml"));
         this->m_view->setResizeMode(QQuickView::SizeRootObjectToView);
         this->m_view->showMaximized();
     }

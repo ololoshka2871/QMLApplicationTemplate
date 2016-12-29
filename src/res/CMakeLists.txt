@@ -2,34 +2,34 @@ cmake_minimum_required(VERSION 3.0)
 
 include(Functions)
 
-function(xmlGenResSection section_name files PREVDATA OUTVAR)
-    string(CONCAT res_str ${PREVDATA} "\t<qresource prefix=\"/${section_name}\">\n")
+function(xmlGenResSection files PREVDATA OUTVAR)
+    set(res_str ${PREVDATA})
     foreach(f ${files})
-        string(REGEX REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/${section_name}/(.*)" "\\1" r_f ${f})
+        string(REGEX REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/(.*)" "\\1" r_f ${f})
         string(CONCAT res_str ${res_str} "\t\t<file>${r_f}</file>\n")
     endforeach()
-    string(CONCAT res_str ${res_str} "\t</qresource>\n")
     set(${OUTVAR} ${res_str} PARENT_SCOPE)
 endfunction()
 
 # Resource folders
 # ******************************************************************************
-set(Resources fonts icons qml/App qml/Lib)
+set(qml_lib_dir qml/Lib)
+set(Resources fonts icons qml/App ${qml_lib_dir})
 
-set(RCC_CONTENT "<RCC>\n")
+set(RCC_CONTENT "<RCC>\n\t<qresource prefix=\"/\">\n")
 set(All_res_files)
 foreach(r ${Resources})
     set(_res)
     AddResources(${CMAKE_CURRENT_SOURCE_DIR}/${r} ${r} _res)
-    xmlGenResSection(${r} "${_res}" ${RCC_CONTENT} RCC_CONTENT)
     list(APPEND All_res_files ${_res})
 endforeach()
-string(CONCAT RCC_CONTENT ${RCC_CONTENT} "</RCC>")
+xmlGenResSection("${All_res_files}" ${RCC_CONTENT} RCC_CONTENT)
+string(CONCAT RCC_CONTENT ${RCC_CONTENT} "\t</qresource>\n</RCC>")
 
 add_custom_target(__fake_resources SOURCES ${All_res_files})
 
 set(resource_file_name_in   ${CMAKE_CURRENT_SOURCE_DIR}/res.qrc.in)
-set(resource_file_name      ${CMAKE_CURRENT_BINARY_DIR}/res.qrc)
+set(resource_file_name      ${CMAKE_CURRENT_SOURCE_DIR}/res.qrc)
 configure_file(${resource_file_name_in} ${resource_file_name} @ONLY)
 
 # App Icon
@@ -49,5 +49,7 @@ IF(MINGW)
             -o ${Project_rc_obj}
     )
 ENDIF()
+
+set(QML_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${qml_lib_dir}" CACHE STRING "Qt Creator extra qml import paths")
 
 set(RESOURCES_FILE ${resource_file_name} ${Project_rc_obj}  PARENT_SCOPE)

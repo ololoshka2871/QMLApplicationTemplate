@@ -12,7 +12,7 @@ endfunction()
 
 function(AddResources rel_path group_name list_res)
   #message(STATUS "   > ${rel_path} >> ${group_name}")
-  file(GLOB list_globbed "${rel_path}/*.*")
+  file(GLOB list_globbed "${rel_path}/*")
   #foreach(file ${list_globbed})
   #  message(STATUS "     - ${file}")
   #endforeach()
