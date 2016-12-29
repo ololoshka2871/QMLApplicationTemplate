@@ -8,17 +8,28 @@ find_package(Qt5 ${TEMPLATE_QT_VERSION} CONFIG REQUIRED ${TEMPLATE_QT_MODULES})
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTORCC ON)
 
+set(QT_MODULES)
+foreach(module ${TEMPLATE_QT_MODULES})
+    list(APPEND QT_MODULES Qt5::${module})
+endforeach()
+
 # configure files
 # ******************************************************************************
 set(metafile_in     ${CMAKE_CURRENT_SOURCE_DIR}/meta.hpp.in)
 set(metafile        ${CMAKE_CURRENT_BINARY_DIR}/meta.hpp)
 configure_file(${metafile_in} ${metafile} @ONLY)
 
-add_subdirectory(res)
-
 # definitions
 # ******************************************************************************
 add_definitions(${QT_DEFINITIONS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+# subfolders
+# *****************************************************************************
+add_subdirectory(res)
+add_subdirectory(Application)
+
+include_directories(${Application_INCLUDE_DIR})
 
 # target
 # ******************************************************************************
@@ -27,8 +38,6 @@ add_executable(${PROJECT_NAME}
     main.cpp
     )
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-
 # c++11
 # ******************************************************************************
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
@@ -36,11 +45,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # link
 # ******************************************************************************
-set(QT_MODULES)
-foreach(module ${TEMPLATE_QT_MODULES})
-    list(APPEND QT_MODULES Qt5::${module})
-endforeach()
-
 target_link_libraries(${PROJECT_NAME}
     ${QT_MODULES}
+    Application
     )

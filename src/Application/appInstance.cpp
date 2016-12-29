@@ -23,15 +23,13 @@ namespace app {
         QApplication::setApplicationName(Meta::appName);
         QApplication::setApplicationVersion(Meta::versionString);
 
-        auto path = QDir(QGuiApplication::applicationDirPath());
+        auto path = QDir(":");
 
-#ifdef __APPLE__
-        path.cdUp();
-#endif
-        auto resourceDir = path.absolutePath() + "/Resources/";
+        auto resourceDir = path.absolutePath();
 
-        AddFontDir(resourceDir + "fonts/roboto/");
-        AddFontDir(resourceDir + "fonts/font-awesome/");
+        auto fonts_dir = QDir(resourceDir + "/fonts");
+
+        AddFontDir(fonts_dir.absolutePath());
 
         this->m_view = new QQuickView();
         this->m_view->setTitle(QGuiApplication::applicationName());
