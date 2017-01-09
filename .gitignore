@@ -6,3 +6,5 @@ doc/doxygen/output/
 *.pyc
 *.DS_Store
 *.qrc
+CMakeLists.txt.user
+*-build/
