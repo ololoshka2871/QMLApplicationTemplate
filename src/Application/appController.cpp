@@ -11,16 +11,16 @@ namespace app {
         }
     }
 
-    auto Controller::Create() -> Controller* {
+    Controller* Controller::Create() {
         instance = new Controller();
         return instance;
     }
 
-    auto Controller::getVersion() -> QString {
+    QString Controller::getVersion() {
         return Meta::versionString;
     }
 
-    auto Controller::isDebugBuild() -> bool {
+    bool Controller::isDebugBuild() {
 #ifdef NDEBUG
         return false;
 #else

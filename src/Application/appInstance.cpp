@@ -9,6 +9,7 @@
 #include <QQmlEngine>
 #include <QDirIterator>
 #include <QDir>
+#include <QQuickView>
 #include <QDebug>
 
 namespace app {
@@ -18,7 +19,7 @@ namespace app {
     Instance::Instance() {
     }
 
-    auto Instance::init() -> void {
+    void Instance::init() {
         QApplication::setOrganizationName(Meta::orgName);
         QApplication::setOrganizationDomain(Meta::orgDomain);
         QApplication::setApplicationName(Meta::appName);
@@ -46,7 +47,7 @@ namespace app {
         this->m_view->showMaximized();
     }
 
-    auto Instance::Execute(int argc, char** argv) -> int {
+    int Instance::Execute(int argc, char** argv) {
         QApplication application(argc, argv);
 
         if (!instance) {
@@ -58,7 +59,7 @@ namespace app {
         return 1;
     }
 
-    auto Instance::AddFontDir(const QString& directory) -> void {
+    void Instance::AddFontDir(const QString& directory) {
         QDirIterator it(directory, {"*.ttf", "*.otf"}, QDir::Files);
 
         while (it.hasNext()) {

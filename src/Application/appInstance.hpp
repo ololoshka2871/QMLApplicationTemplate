@@ -1,7 +1,8 @@
-#pragma once
+#ifndef _APP_INSTANCE_HPP_
+#define _APP_INSTANCE_HPP_
 
-#include <QString>
-#include <QQuickView>
+class QString;
+class QQuickView;
 
 namespace app {
 
@@ -11,9 +12,11 @@ namespace app {
     private:
         static Instance* instance;
         Instance();
-        auto init() -> void;
-        auto AddFontDir(const QString&) -> void;
+        void init();
+        void AddFontDir(const QString&);
     public:
-        static auto Execute(int, char**) -> int;
+        static int Execute(int, char**);
     };
 }
+
+#endif /* _APP_INSTANCE_HPP_ */

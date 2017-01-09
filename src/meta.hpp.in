@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __META_HPP__
+#define __META_HPP__
 
 struct Meta
 {
@@ -7,3 +8,5 @@ struct Meta
     static constexpr auto orgDomain     = "@TEMPLATE_DOMAIN@";
     static constexpr auto versionString = "@TEMPLATE_VERSION_MAJOR@.@TEMPLATE_VERSION_MINOR@.@TEMPLATE_VERSION_PATCH@";
 };
+
+#endif /* __META_HPP__ */
